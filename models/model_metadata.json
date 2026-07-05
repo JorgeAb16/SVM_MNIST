@@ -1,0 +1,22 @@
+{
+    "nombre_modelo": "PCA + K-Means + SVM para clasificación de dígitos MNIST",
+    "tipo_modelo": "Reducción de dimensionalidad + clustering no supervisado + clasificación supervisada",
+    "sample_size": 8000,
+    "n_componentes_max_guardados": 100,
+    "n_componentes_final": 1,
+    "varianza_explicada_n_final": 0.0605,
+    "n_clusters": 10,
+    "silhouette_score": 0.5419,
+    "adjusted_rand_index": 0.1192,
+    "svm_kernel": "rbf",
+    "accuracy_test": 0.3125,
+    "archivos_generados": [
+        "/content/models/scaler_mnist.pkl",
+        "/content/models/pca_mnist.pkl",
+        "/content/models/kmeans_mnist.pkl",
+        "/content/models/svm_mnist.pkl",
+        "/content/models/model_metadata.json",
+        "/content/outputs/mnist_comparacion_componentes.csv",
+        "/content/outputs/mnist_muestra_clusters.csv"
+    ]
+}

@@ -1,0 +1,15 @@
+streamlit>=1.32
+pandas>=2.0
+numpy>=1.24
+scikit-learn==1.6.1
+seaborn>=0.13
+matplotlib>=3.7
+joblib>=1.3
+
+# IMPORTANTE: la línea de scikit-learn debe coincidir EXACTAMENTE con la versión
+# usada en Colab al entrenar y guardar los .pkl (scaler_mnist.pkl, pca_mnist.pkl,
+# kmeans_mnist.pkl, svm_mnist.pkl). Verifica en Colab con:
+#   import sklearn; print(sklearn.__version__)
+# y reemplaza el "1.6.1" de arriba por ese número exacto si es distinto.
+# De lo contrario, al cargar los .pkl en Streamlit Cloud puede fallar con un
+# error tipo "AttributeError: Can't get attribute ... on sklearn...".
