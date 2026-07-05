@@ -233,7 +233,7 @@ st.markdown(
     """
     <div class="app-header">
         <h1>🔢 PCA + K-Means + SVM — Dígitos MNIST</h1>
-        <p>Reducción de dimensionalidad, clustering y clasificación · IS-701 Inteligencia Artificial · UNAH Campus Comayagua</p>
+        <p>Reducción de dimensionalidad, clustering y clasificación · IS-701 Inteligencia Artificial · Jorge Abraham Fajardo López · 20231900189</p>
     </div>
     """,
     unsafe_allow_html=True,
