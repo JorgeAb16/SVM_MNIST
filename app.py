@@ -575,7 +575,6 @@ st.markdown(
     """
     <div class="footer">
         <strong>IS-701 Inteligencia Artificial</strong> · UNAH Campus Comayagua<br>
-        <span style="opacity:0.7;">Proyecto Académico · PCA + K-Means + SVM · MNIST Digits</span>
     </div>
     """,
     unsafe_allow_html=True,
