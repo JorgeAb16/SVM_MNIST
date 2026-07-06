@@ -298,9 +298,9 @@ idx_muestra = 0
 df_train, df_test = train_test_split(
     df_muestra, test_size=0.25, random_state=RANDOM_STATE, stratify=df_muestra["digito_real"]
 )
-X_train_full = df_train[PCA_COLS].values
+X_train_full = df_train[PCA_COLS].values.astype(np.float32)
 y_train = df_train["digito_real"].values
-X_test_full = df_test[PCA_COLS].values
+X_test_full = df_test[PCA_COLS].values.astype(np.float32)
 y_test = df_test["digito_real"].values
 
 # ----------------------------------------------------------------------------
@@ -335,20 +335,21 @@ resultados = entrenar_modelos(n_components)
 
 def reconstruir_imagen(fila_pca, n_comp):
     """Reconstruye una imagen 28x28 a partir de sus componentes PCA."""
-    vector = np.zeros(N_MAX)
-    vector[:n_comp] = fila_pca[:n_comp]
+    vector = np.zeros(N_MAX, dtype=np.float32)
+    vector[:n_comp] = fila_pca[:n_comp].astype(np.float32)
     x_escalado = pca_full.inverse_transform(vector.reshape(1, -1))
     x_pixeles = scaler.inverse_transform(x_escalado)
     return x_pixeles.reshape(28, 28)
 
 
 def procesar_trazo_dibujado(image_data):
-    """Convierte el arreglo RGBA del canvas en un vector de 784 píxeles."""
+    """Convierte el arreglo RGBA del canvas en un vector de 784 píxeles.
+    Asegura que los datos sean float32 para compatibilidad con scikit-learn."""
     img = Image.fromarray(image_data.astype("uint8"), mode="RGBA").convert("L")
     img = img.resize((28, 28), Image.LANCZOS)
-    arr = np.array(img).astype("float32")
+    arr = np.array(img).astype(np.float32)
     arr_invertido = 255.0 - arr
-    return arr_invertido, arr_invertido.flatten().reshape(1, -1)
+    return arr_invertido, arr_invertido.flatten().reshape(1, -1).astype(np.float32)
 
 
 # ----------------------------------------------------------------------------
@@ -405,9 +406,11 @@ with tab_dibujo:
             if clasificar_dibujo and hay_trazo:
                 with st.spinner("Procesando dibujo..."):
                     imagen_28, vector_pixeles = procesar_trazo_dibujado(canvas_result.image_data)
-                    vector_escalado = scaler.transform(vector_pixeles)
-                    vector_pca_full = pca_full.transform(vector_escalado)
-                    vector_pca = vector_pca_full[:, :n_components]
+                    # Asegurar que todos los datos sean float32
+                    vector_pixeles = vector_pixeles.astype(np.float32)
+                    vector_escalado = scaler.transform(vector_pixeles).astype(np.float32)
+                    vector_pca_full = pca_full.transform(vector_escalado).astype(np.float32)
+                    vector_pca = vector_pca_full[:, :n_components].astype(np.float32)
 
                     digito_predicho = int(resultados["svm"].predict(vector_pca)[0])
                     cluster_asignado = int(resultados["kmeans"].predict(vector_pca)[0])
@@ -538,7 +541,7 @@ with tab_svm:
     with c3:
         st.metric("🔢 Muestras test", f"{len(X_test_full):,}")
 
-    fila_pca = df_test.iloc[idx_muestra][PCA_COLS].values[:n_components].reshape(1, -1)
+    fila_pca = df_test.iloc[idx_muestra][PCA_COLS].values[:n_components].reshape(1, -1).astype(np.float32)
     digito_real = int(df_test.iloc[idx_muestra]["digito_real"])
     digito_predicho = int(resultados["svm"].predict(fila_pca)[0])
 
